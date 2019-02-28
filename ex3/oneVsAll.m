@@ -49,18 +49,31 @@ X = [ones(m, 1) X];
 %                 initial_theta, options);
 %
 
+% Base theta for calculating cost.
+base_theta = zeros(n + 1, 1);
+     
+% Set options for fminunc
+options = optimset('GradObj', 'on', 'MaxIter', 50);
+ 
+% Run fmincg to obtain the optimal theta
+% This function will return theta and the cost 
+     
+% Variable 'X' contains data in dimension (5000 * 400). 
+% 5000 = Number of all training examples, 400 = 400 pixels / training sample (digit image)
+% Total feature number is 400
+for c = 1:num_labels 
+    all_theta(c,:) = fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), base_theta, options);
+    % y (5000*1) is an array of labels. 
+    % y==c will return a vector with values 0 or 1.
 
+    % 't' is passed as dummy parameter which is initialized with 'base_theta' first
+    % then subsequent values are choosen by fmincg [Note: Its not a builtin function like fminunc
 
-
-
-
-
-
-
-
-
+    % fmincg will consider all training data having label c (1-10 note
+    % 0 is mapped to 10) and find the optimal theta vector for it (Classifying white pixels with gray pixels). same
+    % process is repeated for other classes
+end
 
 % =========================================================================
-
 
 end
