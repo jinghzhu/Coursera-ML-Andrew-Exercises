@@ -36,14 +36,21 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
-h_theta = sigmoid(X * theta);
+%  cost Function
+paraForH = X * theta;
+sim = sigmoid(paraForH);
+logParaForH = log(sigmoid(paraForH));
+J = (-y).*logParaForH-(1-y).*log(1-sigmoid(paraForH));
+J = sum(J)/m;
 
-J = 1/m * (-1 * y') * log(h_theta) - (1 - y') * log(1 - h_theta) + lambda/(2 * m) * (sum(theta(2:end) .^ 2));
+% regularized cost Function
+J = J + lambda / (2*m) * (sum(theta.^2) - theta(1,1)^2);
 
-temp = theta;
-temp(1) = 0;
-
-grad = 1/m * X' * (h_theta - y) + lambda / m * temp;
+% gradient descent
+temp = sim-y;
+grad = X'*temp/m;
+grad = grad+lambda/m*theta;
+grad(1,1) = grad(1,1)-lambda/m*theta(1);
 
 % =============================================================
 

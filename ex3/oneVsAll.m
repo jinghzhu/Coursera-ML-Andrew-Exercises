@@ -62,7 +62,7 @@ options = optimset('GradObj', 'on', 'MaxIter', 50);
 % 5000 = Number of all training examples, 400 = 400 pixels / training sample (digit image)
 % Total feature number is 400
 for c = 1:num_labels 
-    all_theta(c,:) = fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), base_theta, options);
+    all_theta(c,:) = fmincg (@(base_theta)(lrCostFunction(base_theta, X, (y == c), lambda)), base_theta, options);
     % y (5000*1) is an array of labels. 
     % y==c will return a vector with values 0 or 1.
 
